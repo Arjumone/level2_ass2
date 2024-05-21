@@ -8,7 +8,7 @@ interface Inventory {
     inStock: boolean;
 }
 
-interface Product {
+interface TProduct {
     name: string;
     description: string;
     price: number;

@@ -11,7 +11,7 @@ const variantsSchema = new Schema<Variant>({
     }
 });
 
-const productSchema = new Schema<Product>({
+const productSchema = new Schema<TProduct>({
     name:{
         type:String,
         require:[true,"Name is required"]
@@ -40,4 +40,4 @@ const productSchema = new Schema<Product>({
     }
 });
 
-export const Product = model<Product>("Product",productSchema)
+export const Product = model<TProduct>("Product",productSchema)
