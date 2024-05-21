@@ -4,7 +4,7 @@ import { Product } from "./product.model";
 const router = express.Router();
 
 router.post("/",async(req:Request,res:Response)=>{
-    
+  
     const result = await Product.create(req.body);
     res.json({
         "success": true,
@@ -13,4 +13,4 @@ router.post("/",async(req:Request,res:Response)=>{
     })
 })
 
-export const ProductRoute = router;
+export const ProductRoutes = router;
