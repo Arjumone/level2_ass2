@@ -34,7 +34,7 @@ const getAllProducts = async (req: Request, res: Response) => {
 
         res.status(200).json({
             success: true,
-            message: "Products fetched successfully!",
+            message: "Products matching search term 'iphone' fetched successfully!",
             data: result
         });
     } catch (err: any) {
@@ -76,8 +76,8 @@ const getProductById = async (req: Request, res: Response) => {
 
 const updateProduct = async (req: Request, res: Response) => {
     try {
-        const { productId } = req.params; // Extract product ID from request parameters
-        const updatedProduct = await ProductServices.updateProductById(productId, req.body); // Update product using the service method
+        const { productId } = req.params; 
+        const updatedProduct = await ProductServices.updateProductById(productId, req.body); 
 
         if (!updatedProduct) {
             return res.status(404).json({
@@ -104,8 +104,8 @@ const updateProduct = async (req: Request, res: Response) => {
 // Delete product by ID
 const deleteProduct = async (req: Request, res: Response) => {
     try {
-        const { productId } = req.params; // Extract product ID from request parameters
-        const deletedProduct = await ProductServices.deleteProductById(productId); // Delete product using the service method
+        const { productId } = req.params;
+        const deletedProduct = await ProductServices.deleteProductById(productId); 
 
         if (!deletedProduct) {
             return res.status(404).json({
