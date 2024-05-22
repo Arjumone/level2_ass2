@@ -1,40 +1,139 @@
-import { Request, Response } from "express"
-import { ProductServices } from "./product.services"
+import { Request, Response } from "express";
+import { ProductServices } from "./product.services";
 
-//create product
-const createProduct =  async(req:Request,res:Response)=>{
-  
-    const productData = req.body;
-    const result = await ProductServices.createProduct(productData)
-   
-    res.json({
-        "success": true,
-    "message": "Product created successfully!",
-    
-    })
-};
-
-//get product
-const getAllProducts =async(req:Request,res:Response)=>{
-    try{
-        const result = await ProductServices.getAllProducts(req.query);
-
-        res.status(200).json({
-            success:true,
-            message:"Products fetched successfully!",
-            data:result,
+// Create product
+const createProduct = async (req: Request, res: Response) => {
+    try {
+        const productData = req.body;
+        const result = await ProductServices.createProduct(productData);
+        res.status(201).json({
+            success: true,
+            message: "Product created successfully!",
+            data: result
+        });
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: "Could not create Product!",
+            error: err.message 
         });
     }
-    catch(err:any){
-        res.status(500).json({
-            success:false,
-            message:"Could not fetch Product!",
-            error:err,
-        })
-    }
-}
+};
 
-export const ProductController ={
+// Get all products or search by searchTerm
+const getAllProducts = async (req: Request, res: Response) => {
+    try {
+        const searchTerm = req.query.searchTerm as string | undefined;
+        let result;
+
+        if (searchTerm) {
+            result = await ProductServices.getProductsBySearchTerm(searchTerm);
+        } else {
+            result = await ProductServices.getAllProducts();
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Products fetched successfully!",
+            data: result
+        });
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: "Could not fetch Products!",
+            error: err.message 
+        });
+    }
+};
+
+// Get product by ID
+const getProductById = async (req: Request, res: Response) => {
+    try {
+        const { productId } = req.params;
+        const result = await ProductServices.getProductById(productId);
+
+        if (!result) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+                data: null
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product fetched successfully!",
+            data: result
+        });
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: "Could not fetch Product!",
+            error: err.message 
+        });
+    }
+};
+
+const updateProduct = async (req: Request, res: Response) => {
+    try {
+        const { productId } = req.params; // Extract product ID from request parameters
+        const updatedProduct = await ProductServices.updateProductById(productId, req.body); // Update product using the service method
+
+        if (!updatedProduct) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+                data: null
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product updated successfully!",
+            data: updatedProduct
+        });
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: "Error updating product!",
+            error: err.message
+        });
+    }
+};
+
+// Delete product by ID
+const deleteProduct = async (req: Request, res: Response) => {
+    try {
+        const { productId } = req.params; // Extract product ID from request parameters
+        const deletedProduct = await ProductServices.deleteProductById(productId); // Delete product using the service method
+
+        if (!deletedProduct) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+                data: null
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product deleted successfully!",
+            data: null
+        });
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: "Error deleting product!",
+            error: err.message
+        });
+    }
+};
+
+
+export const ProductController = {
     createProduct,
-    getAllProducts
-}
+    getAllProducts,
+    getProductById,
+    updateProduct,
+    deleteProduct
+};
