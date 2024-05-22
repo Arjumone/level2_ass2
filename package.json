@@ -4,10 +4,12 @@
   "main": "index.js",
   "scripts": {
     "prettier": "prettier --ignore-path .gitignore --write \"./src**/*.+(js|ts|json)\"",
+    "start":"node ./dist/server.js",
     "start:prod": "node ./dist/server.js",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint . --fix",
     "start:dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
+    "build":"tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
